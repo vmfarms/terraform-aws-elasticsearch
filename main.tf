@@ -5,13 +5,13 @@ resource "aws_iam_service_linked_role" "es" {
 }
 
 resource "aws_security_group" "es" {
-  name = "elasticsearch-${var.domain}"
+  name        = "elasticsearch-${var.domain}"
   description = "Managed by Terraform"
-  vpc_id = var.vpc_id
+  vpc_id      = var.vpc_id
   ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
     cidr_blocks = var.private_subnets_cidrs
   }
 }
@@ -20,7 +20,7 @@ data "aws_caller_identity" "current" {
 }
 
 resource "aws_elasticsearch_domain" "es_domain" {
-  domain_name = var.domain
+  domain_name     = var.domain
   access_policies = <<POLICY
 {
   "Version": "2012-10-17",
@@ -38,12 +38,12 @@ resource "aws_elasticsearch_domain" "es_domain" {
 POLICY
 
 
-  elasticsearch_version     = var.elasticsearch_version
+  elasticsearch_version = var.elasticsearch_version
   encrypt_at_rest {
     enabled = true
   }
-  node_to_node_encryption{
-    enabled = var.node_to_node_encryption 
+  node_to_node_encryption {
+    enabled = var.node_to_node_encryption
   }
   vpc_options {
     subnet_ids         = [var.private_subnets[0]]
@@ -64,5 +64,9 @@ POLICY
   tags = {
     Domain = var.domain
   }
+
+  depends_on = [
+    "aws_iam_service_linked_role.es",
+  ]
 }
 
