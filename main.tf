@@ -38,7 +38,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
 POLICY
 
 
-  elasticsearch_version = "6.8"
+  elasticsearch_version = "7.1"
   encrypt_at_rest {
     enabled = true
   }
