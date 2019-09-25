@@ -38,6 +38,11 @@ variable "private_subnets" {
   description = "Subnet IDs that can access Elasticsearch (once created). Typically the worker security group ID created by the EKS module."
 }
 
+variable "elasticsearch_version" {
+  type        = string
+  description = "Version of Elasticsearch to use"
+}
+
 variable "create_iam_service_linked_role" {
   type        = string
   default     = true
