@@ -38,7 +38,7 @@ resource "aws_elasticsearch_domain" "es_domain" {
 POLICY
 
 
-  elasticsearch_version = var.elasticsearch_version
+  elasticsearch_version = "6.8"
   encrypt_at_rest {
     enabled = true
   }
@@ -58,7 +58,7 @@ POLICY
   }
   ebs_options {
     ebs_enabled = "true"
-    volume_type = "standard"
+    volume_type = "gp2"
     volume_size = var.volume_size
   }
   tags = {
