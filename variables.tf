@@ -56,8 +56,8 @@ variable "node_to_node_encryption" {
 }
 
 variable "tags" {
-  type       = map(string)
-  default    = {}
-  decription = "A set of AWS tags to tag the resulting Elasticsearch cluster with."
+  type        = map(string)
+  default     = {}
+  description = "A set of AWS tags to tag the resulting Elasticsearch cluster with."
 }
 
