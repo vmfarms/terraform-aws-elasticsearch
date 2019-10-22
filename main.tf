@@ -61,9 +61,7 @@ POLICY
     volume_type = "gp2"
     volume_size = var.volume_size
   }
-  tags = {
-    Domain = var.domain
-  }
+  tags = merge({ Domain = var.domain }, var.tags)
 
   depends_on = [
     "aws_iam_service_linked_role.es",

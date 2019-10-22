@@ -55,3 +55,9 @@ variable "node_to_node_encryption" {
   description = "Whether or not to use node-node encryption for the newly created ES domain. Requires `elasticsearch_version` version >= 6"
 }
 
+variable "tags" {
+  type       = map(string)
+  default    = {}
+  decription = "A set of AWS tags to tag the resulting Elasticsearch cluster with."
+}
+
