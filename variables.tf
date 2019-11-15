@@ -61,3 +61,8 @@ variable "tags" {
   decription = "A set of AWS tags to tag the resulting Elasticsearch cluster with."
 }
 
+variable "multiaz" {
+  type        = bool
+  default     = false
+  description = "Determines if the elasticsearch should be deployed to two AZs. (Default false)"
+}
