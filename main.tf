@@ -46,12 +46,13 @@ POLICY
     enabled = var.node_to_node_encryption
   }
   vpc_options {
-    subnet_ids         = [var.private_subnets[0]]
+    subnet_ids         = slice(var.private_subnets, 0, var.multiaz ? 2 : 1)
     security_group_ids = [aws_security_group.es.id]
   }
   cluster_config {
-    instance_type  = var.instance_type
-    instance_count = var.instance_count
+    instance_type          = var.instance_type
+    instance_count         = var.instance_count
+    zone_awareness_enabled = var.multiaz
   }
   snapshot_options {
     automated_snapshot_start_hour = 23
