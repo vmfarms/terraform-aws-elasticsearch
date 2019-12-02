@@ -37,10 +37,9 @@ resource "aws_elasticsearch_domain" "es_domain" {
 }
 POLICY
 
-
   elasticsearch_version = var.elasticsearch_version
   encrypt_at_rest {
-    enabled = true
+    enabled = var.encrypt_at_rest
   }
   node_to_node_encryption {
     enabled = var.node_to_node_encryption
