@@ -65,7 +65,7 @@ POLICY
   tags = merge({ Domain = var.domain }, var.tags)
 
   depends_on = [
-    "aws_iam_service_linked_role.es",
+    aws_iam_service_linked_role.es,
   ]
 }
 
