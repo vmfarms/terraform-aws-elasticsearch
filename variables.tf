@@ -49,6 +49,12 @@ variable "create_iam_service_linked_role" {
   description = "Create an AWS Service-Linked Role for use by Elasticsearch. The service linked role is used to provide the Elasticsearch cluster with the appropriate permissions to run. This should be 'true' for the first Elasticsearch cluster you create, and 'false' thereafter. (Only one service-linked role can be created per AWS account and it is shared by all ES domains.) More info at https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
 }
 
+variable "encrypt_at_rest" {
+  type        = bool
+  default     = true
+  description = "Whether or not to use encryption-at-rest for the newly created elasticsearch cluster. Needs to be disabled if using older instance types like t2 and m3 that do not support encryption."
+}
+
 variable "node_to_node_encryption" {
   type        = string
   default     = false
@@ -56,8 +62,8 @@ variable "node_to_node_encryption" {
 }
 
 variable "tags" {
-  type       = map(string)
-  default    = {}
+  type        = map(string)
+  default     = {}
   description = "A set of AWS tags to tag the resulting Elasticsearch cluster with."
 }
 
@@ -65,4 +71,22 @@ variable "multiaz" {
   type        = bool
   default     = false
   description = "Determines if the elasticsearch should be deployed to two AZs. (Default false)"
+}
+
+variable "dedicated_master_enabled" {
+  type        = bool
+  default     = false
+  description = "Determines if a dedicated master insatance is needed"
+}
+
+variable "dedicated_master_count" {
+  type        = number
+  default     = 3
+  description = "Determines how many dedicated master should be created (dedicated_master_enabled should be ture)"
+}
+
+variable "dedicated_master_type" {
+  type        = string
+  default     = "c5.large.elasticsearch"
+  description = "Determines the type of dedicated master instances that should be created (dedicated_master_enabled should be ture)"
 }
