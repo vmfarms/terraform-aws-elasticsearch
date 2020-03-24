@@ -72,3 +72,21 @@ variable "multiaz" {
   default     = false
   description = "Determines if the elasticsearch should be deployed to two AZs. (Default false)"
 }
+
+variable "dedicated_master_enabled" {
+  type        = bool
+  default     = false
+  description = "Determines if a dedicated master insatance is needed"
+}
+
+variable "dedicated_master_count" {
+  type        = number
+  default     = 3
+  description = "Determines how many dedicated master should be created (dedicated_master_enabled should be ture)"
+}
+
+variable "dedicated_master_type" {
+  type        = string
+  default     = "c5.large.elasticsearch"
+  description = "Determines the type of dedicated master instances that should be created (dedicated_master_enabled should be ture)"
+}

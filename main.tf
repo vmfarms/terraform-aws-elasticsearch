@@ -49,9 +49,12 @@ POLICY
     security_group_ids = [aws_security_group.es.id]
   }
   cluster_config {
-    instance_type          = var.instance_type
-    instance_count         = var.instance_count
-    zone_awareness_enabled = var.multiaz
+    instance_type            = var.instance_type
+    instance_count           = var.instance_count
+    zone_awareness_enabled   = var.multiaz
+    dedicated_master_enabled = var.dedicated_master_enabled
+    dedicated_master_type    = var.dedicated_master_enabled ? var.dedicated_master_type : null
+    dedicated_master_count   = var.dedicated_master_enabled ? var.dedicated_master_count : null
   }
   snapshot_options {
     automated_snapshot_start_hour = 23
