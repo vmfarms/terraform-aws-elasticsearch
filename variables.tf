@@ -45,7 +45,7 @@ variable "elasticsearch_version" {
 
 variable "create_iam_service_linked_role" {
   type        = string
-  default     = true
+  default     = false
   description = "Create an AWS Service-Linked Role for use by Elasticsearch. The service linked role is used to provide the Elasticsearch cluster with the appropriate permissions to run. This should be 'true' for the first Elasticsearch cluster you create, and 'false' thereafter. (Only one service-linked role can be created per AWS account and it is shared by all ES domains.) More info at https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html"
 }
 
@@ -90,3 +90,66 @@ variable "dedicated_master_type" {
   default     = "c5.large.elasticsearch"
   description = "Determines the type of dedicated master instances that should be created (dedicated_master_enabled should be ture)"
 }
+
+variable "log_publishing_options" {
+  type        = bool
+#  default     = true
+  description = "Options for publishing slow and application logs to CloudWatch Logs. This block can be declared multiple times, for each log_type, within the same resource."
+}
+
+variable "log_type_index_slow_logs" {
+  type        = string
+  default     = "INDEX_SLOW_LOGS"
+  description = "A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS"
+}
+
+variable "log_type_search_slow_logs" {
+  type        = string
+  default     = "SEARCH_SLOW_LOGS"
+  description = "A type of Elasticsearch log. Valid values: SEARCH_SLOW_LOGS"
+}
+variable "log_type_es_application_logs" {
+  type        = string
+  default     = "ES_APPLICATION_LOGS"
+  description = "A type of Elasticsearch log. Valid values: ES_APPLICATION_LOGS"
+}
+variable "log_type_audit_logs" {
+  type        = string
+  default     = "AUDIT_LOGS"
+  description = "A type of Elasticsearch log. Valid values: AUDIT_LOGS"
+}
+
+variable "advanced_security_options" {
+  type        = bool
+#  default     = true
+  description = "Whether advanced security is enabled"
+}
+
+variable "domain_endpoint_options" {
+  type        = bool
+#  default     = true
+  description = "Whether or not to require HTTPS"
+}
+
+variable "master_user_name" {
+  type        = string
+  default     = "test-user"
+  description = "The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database."
+}
+variable "master_user_password" {
+  type        = string
+  default     = "password"
+  description = "The master user's password, which is stored in the Amazon Elasticsearch Service domain's internal database."
+}
+
+variable "master_user_options" {
+  type        = bool
+#  default     = true
+  description = "Credentials for the master user: username and password, or ARN"
+}
+
+variable "cognito_options" {
+  type        = bool
+#  default     = true
+  description = "Amazon Cognito Authentication for Kibana"
+ }

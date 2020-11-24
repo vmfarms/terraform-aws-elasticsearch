@@ -42,7 +42,7 @@ POLICY
     enabled = var.encrypt_at_rest
   }
   node_to_node_encryption {
-    enabled = var.node_to_node_encryption
+    enabled = "true" #var.node_to_node_encryption #Required for advanced_security_options
   }
   vpc_options {
     subnet_ids         = slice(var.private_subnets, 0, var.multiaz ? 2 : 1)
@@ -59,6 +59,44 @@ POLICY
   snapshot_options {
     automated_snapshot_start_hour = 23
   }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.elasticsearch-advanced-logs.arn
+    log_type                 = var.log_type_index_slow_logs
+    enabled                  = "true"
+  }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.elasticsearch-advanced-logs.arn
+    log_type                 = var.log_type_search_slow_logs
+    enabled                  = "true"
+  }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.elasticsearch-advanced-logs.arn
+    log_type                 = var.log_type_es_application_logs
+    enabled                  = "true"
+  }
+  log_publishing_options {
+    cloudwatch_log_group_arn = aws_cloudwatch_log_group.elasticsearch-advanced-logs.arn
+    log_type                 = var.log_type_audit_logs
+    enabled                  = "true"
+  }
+  advanced_security_options {
+    enabled                        = "true" #Entire block required to enable advanced log publishing
+    internal_user_database_enabled = "true" 
+#  }
+#  master_user_options  {
+#    enabled                        = "true"
+#    master_user_name               = "test-user"
+#    master_user_password           = "password"
+  }
+  domain_endpoint_options {
+    enforce_https            = "true" #Required for advanced_security_options
+    tls_security_policy      = "Policy-Min-TLS-1-2-2019-07"
+  }
+#  cognito_options {
+#    enabled                  = "true"
+#    user_pool_id             = var.cognito_user_pool_id
+#    role_arn                 = var.cognito_role_arn
+#  }
   ebs_options {
     ebs_enabled = "true"
     volume_type = "gp2"
@@ -69,5 +107,37 @@ POLICY
   depends_on = [
     aws_iam_service_linked_role.es,
   ]
+
+
+resource "aws_cloudwatch_log_group" "elasticsearch-advanced-logs" {
+  name              = "elasticsearch-advanced-logs"
+  retention_in_days = "0"
+
+
+#  tags = {
+#    Environment = "production"
+#    Application = "serviceA"
+#  }
 }
 
+data "aws_iam_policy_document" "elasticsearch-log-publishing-policy" {
+  statement {
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:PutLogEventsBatch",
+    ]
+
+    resources = ["arn:aws:logs:*"]
+
+    principals {
+      identifiers = ["es.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_resource_policy" "elasticsearch-log-publishing-policy" {
+  policy_document = data.aws_iam_policy_document.elasticsearch-log-publishing-policy.json
+  policy_name     = "elasticsearch-log-publishing-policy"
+}
