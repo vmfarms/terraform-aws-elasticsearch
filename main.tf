@@ -82,12 +82,11 @@ POLICY
   advanced_security_options {
     enabled                        = "true" #Entire block required to enable advanced log publishing
     internal_user_database_enabled = "true" 
-#  }
-#  master_user_options  {
-#    enabled                        = "true"
-#    master_user_name               = "test-user"
-#    master_user_password           = "password"
+    master_user_options  {
+    master_user_name               = "test-user"
+    master_user_password           = "Passw0rd123!"
   }
+}
   domain_endpoint_options {
     enforce_https            = "true" #Required for advanced_security_options
     tls_security_policy      = "Policy-Min-TLS-1-2-2019-07"
@@ -107,7 +106,7 @@ POLICY
   depends_on = [
     aws_iam_service_linked_role.es,
   ]
-
+}
 
 resource "aws_cloudwatch_log_group" "elasticsearch-advanced-logs" {
   name              = "elasticsearch-advanced-logs"

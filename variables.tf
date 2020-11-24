@@ -144,7 +144,7 @@ variable "master_user_password" {
 
 variable "master_user_options" {
   type        = bool
-#  default     = true
+  default     = true
   description = "Credentials for the master user: username and password, or ARN"
 }
 
