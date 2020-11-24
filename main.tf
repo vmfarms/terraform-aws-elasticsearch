@@ -111,8 +111,6 @@ POLICY
 resource "aws_cloudwatch_log_group" "elasticsearch-advanced-logs" {
   name              = "elasticsearch-advanced-logs"
   retention_in_days = "0"
-
-
 #  tags = {
 #    Environment = "production"
 #    Application = "serviceA"

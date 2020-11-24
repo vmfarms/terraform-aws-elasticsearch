@@ -93,41 +93,34 @@ variable "dedicated_master_type" {
 
 variable "log_publishing_options" {
   type        = bool
-#  default     = true
   description = "Options for publishing slow and application logs to CloudWatch Logs. This block can be declared multiple times, for each log_type, within the same resource."
 }
 
 variable "log_type_index_slow_logs" {
   type        = string
-  default     = "INDEX_SLOW_LOGS"
   description = "A type of Elasticsearch log. Valid values: INDEX_SLOW_LOGS"
 }
 
 variable "log_type_search_slow_logs" {
   type        = string
-  default     = "SEARCH_SLOW_LOGS"
   description = "A type of Elasticsearch log. Valid values: SEARCH_SLOW_LOGS"
 }
 variable "log_type_es_application_logs" {
   type        = string
-  default     = "ES_APPLICATION_LOGS"
   description = "A type of Elasticsearch log. Valid values: ES_APPLICATION_LOGS"
 }
 variable "log_type_audit_logs" {
   type        = string
-  default     = "AUDIT_LOGS"
   description = "A type of Elasticsearch log. Valid values: AUDIT_LOGS"
 }
 
 variable "advanced_security_options" {
   type        = bool
-#  default     = true
   description = "Whether advanced security is enabled"
 }
 
 variable "domain_endpoint_options" {
   type        = bool
-#  default     = true
   description = "Whether or not to require HTTPS"
 }
 
@@ -136,6 +129,7 @@ variable "master_user_name" {
   default     = "test-user"
   description = "The master user's username, which is stored in the Amazon Elasticsearch Service domain's internal database."
 }
+
 variable "master_user_password" {
   type        = string
   default     = "password"
@@ -147,9 +141,3 @@ variable "master_user_options" {
   default     = true
   description = "Credentials for the master user: username and password, or ARN"
 }
-
-variable "cognito_options" {
-  type        = bool
-#  default     = true
-  description = "Amazon Cognito Authentication for Kibana"
- }
