@@ -21,7 +21,7 @@ resource "aws_cloudwatch_log_group" "logs" {
 }
 
 resource "aws_cloudwatch_log_resource_policy" "logs_policy" {
-  name = "aws-elasticsearch-${var.domain}-logs-policy"
+  policy_name = "aws-elasticsearch-${var.domain}-logs-policy"
 
   policy_document = <<CONFIG
 {
@@ -37,7 +37,7 @@ resource "aws_cloudwatch_log_resource_policy" "logs_policy" {
         "logs:PutLogEventsBatch",
         "logs:CreateLogStream"
       ],
-      "Resource": "${aws_cloudwatch_log_group.logs.arn}"
+      "Resource": "arn:aws:logs:*"
     }
   ]
 }
@@ -94,7 +94,7 @@ POLICY
   }
 
   dynamic "log_publishing_options" {
-    for_each = ["INDEX_SLOW_LOGS", "SEARCH_SLOW_LOGS", "ES_APPLICATION_LOGS", "AUDIT_LOGS"]
+    for_each = ["INDEX_SLOW_LOGS", "SEARCH_SLOW_LOGS", "ES_APPLICATION_LOGS"]
     content {
       cloudwatch_log_group_arn = aws_cloudwatch_log_group.logs.arn
       log_type                 = log_publishing_options.value
