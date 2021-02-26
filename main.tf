@@ -16,6 +16,34 @@ resource "aws_security_group" "es" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "logs" {
+  name = "aws-elasticsearch-${var.domain}-logs"
+}
+
+resource "aws_cloudwatch_log_resource_policy" "logs_policy" {
+  policy_name = "aws-elasticsearch-${var.domain}-logs-policy"
+
+  policy_document = <<CONFIG
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "es.amazonaws.com"
+      },
+      "Action": [
+        "logs:PutLogEvents",
+        "logs:PutLogEventsBatch",
+        "logs:CreateLogStream"
+      ],
+      "Resource": "arn:aws:logs:*"
+    }
+  ]
+}
+CONFIG
+}
+
 data "aws_caller_identity" "current" {
 }
 
@@ -64,6 +92,15 @@ POLICY
     volume_type = "gp2"
     volume_size = var.volume_size
   }
+
+  dynamic "log_publishing_options" {
+    for_each = ["INDEX_SLOW_LOGS", "SEARCH_SLOW_LOGS", "ES_APPLICATION_LOGS"]
+    content {
+      cloudwatch_log_group_arn = aws_cloudwatch_log_group.logs.arn
+      log_type                 = log_publishing_options.value
+    }
+  }
+
   tags = merge({ Domain = var.domain }, var.tags)
 
   depends_on = [
