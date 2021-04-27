@@ -90,3 +90,9 @@ variable "dedicated_master_type" {
   default     = "c5.large.elasticsearch"
   description = "Determines the type of dedicated master instances that should be created (dedicated_master_enabled should be ture)"
 }
+
+variable "ebs_type" {
+  type        = string
+  description = "Ebs type of volume"
+  default     = "gp2"
+}

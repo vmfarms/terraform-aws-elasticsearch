@@ -89,7 +89,7 @@ POLICY
   }
   ebs_options {
     ebs_enabled = "true"
-    volume_type = "gp2"
+    volume_type = var.ebs_type =! null ? var.ebs_type : "gp2"
     volume_size = var.volume_size
   }
 
